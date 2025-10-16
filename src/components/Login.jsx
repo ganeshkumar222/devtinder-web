@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,10 +16,11 @@ const schema = z.object({
 const Login = () => {
   const dispatch =  useDispatch()
   const navigate = useNavigate()
+  const [axiosError , setAxiosError] = useState(null);
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors , isSubmitting },
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues:{
@@ -38,6 +39,7 @@ console.log(response)
    navigate("/")
 
     } catch (error) {
+      setAxiosError(error.response.data || "something went wrong")
       console.log(error)
     }
    
@@ -82,7 +84,8 @@ console.log(response)
             </fieldset>
 
             <div className="card-actions justify-center">
-              <button type="submit" className="btn btn-primary w-full">
+              {axiosError && <p className="text-error">{axiosError}</p>}
+              <button type="submit" className={`btn btn-primary w-full ${isSubmitting?"cursor-cross":"cursor-pointer"}`} disabled={isSubmitting}>
                 Login
               </button>
             </div>

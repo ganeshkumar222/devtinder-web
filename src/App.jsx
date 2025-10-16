@@ -17,8 +17,6 @@ export default function App() {
            <Route path="/login" element={<Login/>}></Route>
            <Route path="/profile" element={<Profile />}/>
       </Route>
-   
-    
      </Routes>
      </BrowserRouter>
   </Provider>
